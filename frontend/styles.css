@@ -129,3 +129,7 @@ a:hover {
     list-style-type: disc;
     padding-left: 20px;
 }
+
+select#repo, label#repo {
+    display: none;
+}

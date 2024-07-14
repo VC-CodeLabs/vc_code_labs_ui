@@ -122,7 +122,6 @@ export const handler = async (event) => {
         try {
             const repository = await githubRequest('GET', `/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}`);
 
-
             if (repository.message === "Not Found") {
                 throw new Error(`Repository not found: ${repoOwner}/${repoName}`);
             }
@@ -138,10 +137,23 @@ export const handler = async (event) => {
             for (const file of files) {
                 const filePath = `${folderName}/${path.basename(file.path)}`;
                 const fileContent = await fsPromises.readFile(file.path);
+
+                // Check if the file already exists to get the SHA
+                let fileSha = null;
+                try {
+                    const existingFile = await githubRequest('GET', `/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/contents/${encodeURIComponent(filePath)}?ref=${branchName}`);
+                    fileSha = existingFile.sha;
+                } catch (error) {
+                    if (error.message !== "Not Found") {
+                        throw error;
+                    }
+                }
+
                 await githubRequest('PUT', `/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/contents/${encodeURIComponent(filePath)}`, {
                     message: commitText,
                     content: fileContent.toString('base64'),
-                    branch: branchName
+                    branch: branchName,
+                    sha: fileSha
                 });
             }
 
