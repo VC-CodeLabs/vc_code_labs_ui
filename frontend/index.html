@@ -65,11 +65,10 @@ Output: 1
             <label for="name">Branch Name:</label>
             <input type="text" id="name" name="name" required><br><br>
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br><br>
-            <label for="repo">Repository Name:</label>
-            <select id="repo" name="repo" required>
-                <option value="test">test</option>
-            </select><br><br>
+            <input type="email" id="email" name="email" required><br>
+            <select id="repo" name="repo">
+                <!-- The option value will be set via JavaScript -->
+            </select><br>
             <label for="commitMessage">Commit Message:</label>
             <input id="commitMessage" name="commitMessage" type="text" required><br><br>
             <label for="file">Upload File(s):</label>
@@ -83,6 +82,14 @@ Output: 1
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const SUBMISSION_REPO_NAME = 'test';
+
+            const repoSelect = document.getElementById('repo');
+            const option = document.createElement('option');
+            option.value = SUBMISSION_REPO_NAME;
+            option.textContent = SUBMISSION_REPO_NAME;
+            repoSelect.appendChild(option);
+
             const nameInput = document.getElementById('name');
             const emailInput = document.getElementById('email');
             const submitButton = document.querySelector('button[type="submit"]');
