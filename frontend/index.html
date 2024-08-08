@@ -8,21 +8,26 @@
 
 <body>
     <div class="container">
-        <h1>Longest Increasing Subsequence</h1>
+        <h1>Maximum Number of Operations With the Same Score II</h1>
         <div class="challenge-block">
             <h2>Description</h2>
-            <p>
-                <li>Given an integer array nums, return the length of the longest strictly increasing subsequence</li>
-                <li>Leetcode link: <a href="https://leetcode.com/problems/longest-increasing-subsequence/description/"
-                        target="_blank">https://leetcode.com/problems/longest-increasing-subsequence/description/</a>
-                </li>
-            </p>
+    <p>Given an array of integers called <code>nums</code>, you can perform any of the following operations while <code>nums</code> contains at least 2 elements:</p>
+    <ul>
+        <li>Choose the first two elements of <code>nums</code> and delete them.</li>
+        <li>Choose the last two elements of <code>nums</code> and delete them.</li>
+        <li>Choose the first and the last elements of <code>nums</code> and delete them.</li>
+    </ul>
+    <p>The score of the operation is the sum of the deleted elements.</p>
+    <p>Your task is to find the maximum number of operations that can be performed, such that all operations have the same score.</p>
+    <p>Return the maximum number of operations possible that satisfy the condition mentioned above.</p>
+<p>Leetcode link: <a href="https://leetcode.com/problems/maximum-number-of-operations-with-the-same-score-ii/description/" target="_blank">https://leetcode.com/problems/maximum-number-of-operations-with-the-same-score-ii/description/</a></p>
+
         </div>
         <div class="challenge-block">
             <h2>Constraints</h2>
             <p>
-                <li>1 <= nums.length <=2500</li>
-                <li>-104 <= nums[i] <=104</li>
+                <li>2 <= nums.length <= 2000</li>
+                <li>1 <= nums[i] <= 1000</li>
             </p>
         </div>
         <div class="challenge-block">
@@ -39,25 +44,30 @@
         <div class="challenge-block">
             <h2>Example Tests</h2>
             <pre>
-<code>Example 1:
-Input: nums = [10,9,2,5,3,7,101,18]
-Output: 4
-Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+<code><b>Example 1:</b>
+Input: nums = [3,2,1,2,3,4]
+Output: 3
+Explanation: We perform the following operations:
+- Delete the first two elements, with score 3 + 2 = 5, nums = [1,2,3,4].
+- Delete the first and the last elements, with score 1 + 4 = 5, nums = [2,3].
+- Delete the first and the last elements, with score 2 + 3 = 5, nums = [].
+We are unable to perform any more operations as nums is empty.
 
-Example 2:
-Input: nums = [0,1,0,3,2,3]
-Output: 4
+<b>Example 2:</b>
+Input: nums = [3,2,6,1,4]
+Output: 2
+Explanation: We perform the following operations:
+- Delete the first two elements, with score 3 + 2 = 5, nums = [6,1,4].
+- Delete the last two elements, with score 1 + 4 = 5, nums = [6].
+It can be proven that we can perform at most 2 operations.
 
-Example 3:
-Input: nums = [7,7,7,7,7,7,7]
-Output: 1
 </code>
             </pre>
         </div>
         <div class="challenge-block">
             <h2>Due Date</h2>
             <p>
-                <li>All solutions must be submitted by Jun 21st at 23:59:59</li>
+                <li>All solutions must be submitted by August 18th at 23:59:59</li>
             </p>
         </div><br><br>
 
@@ -67,8 +77,8 @@ Output: 1
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required><br>
             <select id="repo" name="repo">
-                <!-- The option value will be set via JavaScript -->
-            </select><br>
+                <option value="max_ops_score">max_ops_score</option>
+            </select><br><br>
             <label for="commitMessage">Commit Message:</label>
             <input id="commitMessage" name="commitMessage" type="text" required><br><br>
             <label for="file">Upload File(s):</label>
@@ -82,14 +92,6 @@ Output: 1
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const SUBMISSION_REPO_NAME = 'test';
-
-            const repoSelect = document.getElementById('repo');
-            const option = document.createElement('option');
-            option.value = SUBMISSION_REPO_NAME;
-            option.textContent = SUBMISSION_REPO_NAME;
-            repoSelect.appendChild(option);
-
             const nameInput = document.getElementById('name');
             const emailInput = document.getElementById('email');
             const submitButton = document.querySelector('button[type="submit"]');
