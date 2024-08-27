@@ -69,12 +69,19 @@ button {
 
 button:hover {
     background-color: #0056b3;
+    border: solid, 3px, rgb(0, 255, 0);
 }
 
 button:disabled {
-    background-color: #007BFF;
+    background-color: #a0a2a5;
     opacity: 0.6;
-    cursor: not-allowed;
+    color: black;
+    cursor: not-allowed; 
+
+    &:hover {
+        border: solid, 3px, red;
+        color:red;
+    }
 }
 
 .challenge-block {
@@ -131,5 +138,13 @@ a:hover {
 }
 
 select#repo, label#repo {
+    display: none;
+}
+
+#honeypot {
+    display: none;
+}
+
+#feedback {
     display: none;
 }

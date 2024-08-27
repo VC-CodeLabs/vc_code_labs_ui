@@ -77,6 +77,15 @@ export const handler = async (event) => {
             }
         }
 
+        // Check honeypot field to prevent submissions from bots
+        if (fields['honeypot'] && fields['honeypot'].trim()) {
+            return {
+                statusCode: 403,
+                headers,
+                body: JSON.stringify({ message: 'Bot detected. Submission rejected.' })
+            };
+        }
+
         const { name, email, repo, commitMessage } = fields;
         const repoName = repo.trim();
         const branchName = name.trim();
@@ -157,15 +166,23 @@ export const handler = async (event) => {
                 });
             }
 
-            const pullRequest = await githubRequest('POST', `/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/pulls`, {
-                title: `Submission from ${name} (${email})`,
-                head: branchName,
-                base: defaultBranch,
-                body: `Code submission by ${name} (${email}).`
-            });
-
-            if (pullRequest.errors) {
-                console.error('Pull Request errors:', pullRequest.errors);
+            // Check if a pull request already exists for the branch
+            const existingPRs = await githubRequest('GET', `/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/pulls?head=${repoOwner}:${branchName}`);
+            if (existingPRs.length > 0) {
+                // Update the existing pull request with the new commits
+                const existingPR = existingPRs[0];
+                await githubRequest('PATCH', `/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/pulls/${existingPR.number}`, {
+                    title: `Updated Submission from ${name} (${email})`,
+                    body: `Updated code submission by ${name} (${email}).`
+                });
+            } else {
+                // Create a new pull request
+                await githubRequest('POST', `/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/pulls`, {
+                    title: `Submission from ${name} (${email})`,
+                    head: branchName,
+                    base: defaultBranch,
+                    body: `Code submission by ${name} (${email}).`
+                });
             }
 
             return {

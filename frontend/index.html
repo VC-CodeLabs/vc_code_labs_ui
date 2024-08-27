@@ -8,68 +8,74 @@
 
 <body>
     <div class="container">
-        <h1>Maximum Number of Operations With the Same Score II</h1>
+        <h1>Number Search</h1>
         <div class="challenge-block">
             <h2>Description</h2>
-    <p>Given an array of integers called <code>nums</code>, you can perform any of the following operations while <code>nums</code> contains at least 2 elements:</p>
-    <ul>
-        <li>Choose the first two elements of <code>nums</code> and delete them.</li>
-        <li>Choose the last two elements of <code>nums</code> and delete them.</li>
-        <li>Choose the first and the last elements of <code>nums</code> and delete them.</li>
-    </ul>
-    <p>The score of the operation is the sum of the deleted elements.</p>
-    <p>Your task is to find the maximum number of operations that can be performed, such that all operations have the same score.</p>
-    <p>Return the maximum number of operations possible that satisfy the condition mentioned above.</p>
-<p>Leetcode link: <a href="https://leetcode.com/problems/maximum-number-of-operations-with-the-same-score-ii/description/" target="_blank">https://leetcode.com/problems/maximum-number-of-operations-with-the-same-score-ii/description/</a></p>
+        <p>Your program must take an input file, create an output file, and return the path to the newly created output file. Ensure the path to the input file is absolute and easily modifiable. <b>The input and output files must use Linux line endings (the line feed character: `\n`)</b>.
+        </br></br>
+            For each line of the input file:
+            </p>
+        <ul>
+            <li>Identify the first number in the line</li>
+            <li>Identify the last number in the line</li>
+            <li>Combine these two numbers to form a two-digit number (if there is only a single number in a given line - use that number twice)</li>
+            <li>Write this two-digit number to the new file</li>
+        </ul>
 
         </div>
+
         <div class="challenge-block">
             <h2>Constraints</h2>
             <p>
-                <li>2 <= nums.length <= 2000</li>
-                <li>1 <= nums[i] <= 1000</li>
+                <li>There will be at least 1 line in each file</li>
+                <li>There is no set limit to the number of lines in a file _(hint: expect very large files)_</li>
+                <li>Each line will contain at least 1 number</li>
+                <li>The maximum line length is 100\</li>
+                <li>Alphanumeric only - no spaces or special characters</li>
             </p>
         </div>
+
         <div class="challenge-block">
             <h2>Scoring</h2>
             <p>
-                <li>Solutions must pass all test cases, including edge cases; tests used for grading/scoring may not be
-                    the same tests provided as examples.</li>
-                <li>Fast execution times will be rewarded, but solutions must, first and foremost, be correct and
-                    complete.</li>
-                <li>If more than three languages are submitted, the fastest solution from each of the top three will be
-                    considered.</li>
+                <li>Solutions must pass all test cases (tests used for scoring will not be the same as the provided example)</li>
+                <li>The program with the fastest execution time that passes all test cases is the winner</li>
             </p>
         </div>
+
         <div class="challenge-block">
-            <h2>Example Tests</h2>
+            <h2>Example</h2>
             <pre>
-<code><b>Example 1:</b>
-Input: nums = [3,2,1,2,3,4]
-Output: 3
-Explanation: We perform the following operations:
-- Delete the first two elements, with score 3 + 2 = 5, nums = [1,2,3,4].
-- Delete the first and the last elements, with score 1 + 4 = 5, nums = [2,3].
-- Delete the first and the last elements, with score 2 + 3 = 5, nums = [].
-We are unable to perform any more operations as nums is empty.
+            <code>
+            <b>Input file:</b>
+            g5t86aah32
+            h7lmq9p
+            3xk
+            y1z4w8b
+            n8v2a  
+            
+            <b>Output file:</b>
+            52
+            79
+            33
+            18
+            82
 
-<b>Example 2:</b>
-Input: nums = [3,2,6,1,4]
-Output: 2
-Explanation: We perform the following operations:
-- Delete the first two elements, with score 3 + 2 = 5, nums = [6,1,4].
-- Delete the last two elements, with score 1 + 4 = 5, nums = [6].
-It can be proven that we can perform at most 2 operations.
+            <b>Program output:</b>
+            /home/user/output.txt
 
-</code>
-            </pre>
+        </code>
+        </pre>
         </div>
+
         <div class="challenge-block">
             <h2>Due Date</h2>
             <p>
-                <li>All solutions must be submitted by August 18th at 23:59:59</li>
+                <li>All solutions must be submitted by September 1st at 23:59:59</li>
             </p>
-        </div><br><br>
+        </div>
+        
+        <br><br>
 
         <form id="codeForm" enctype="multipart/form-data">
             <label for="name">Branch Name:</label>
@@ -77,84 +83,111 @@ It can be proven that we can perform at most 2 operations.
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required><br>
             <select id="repo" name="repo">
-                <option value="max_ops_score">max_ops_score</option>
+                <option value="test">test</option>
             </select><br><br>
             <label for="commitMessage">Commit Message:</label>
             <input id="commitMessage" name="commitMessage" type="text" required><br><br>
             <label for="file">Upload File(s):</label>
             <input type="file" id="file" name="file" multiple required>
             <ul id="fileList"></ul>
+            <input type="text" id="honeypot" name="honeypot" autocomplete="off" >
             <button type="submit">Submit Solution</button>
         </form>
 
-        <div id="feedback" style="display: none;">Uploading your awesome solution... Please wait.</div>
+        <div id="feedback"">Uploading your awesome solution... Please wait.</div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const nameInput = document.getElementById('name');
-            const emailInput = document.getElementById('email');
-            const submitButton = document.querySelector('button[type="submit"]');
-            const feedback = document.getElementById('feedback');
-            const fileInput = document.getElementById('file');
-            const fileList = document.getElementById('fileList');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const commitMessageInput = document.getElementById('commitMessage');
+    const submitButton = document.querySelector('button[type="submit"]');
+    const feedback = document.getElementById('feedback');
+    const fileInput = document.getElementById('file');
+    const fileList = document.getElementById('fileList');
 
-            // Load stored data
-            nameInput.value = localStorage.getItem('name') || '';
-            emailInput.value = localStorage.getItem('email') || '';
+    // Disable submit button initially
+    submitButton.disabled = true;
 
-            // Store data on input change
-            nameInput.addEventListener('input', () => {
-                localStorage.setItem('name', nameInput.value);
+    // Load stored data
+    nameInput.value = localStorage.getItem('name') || '';
+    emailInput.value = localStorage.getItem('email') || '';
+
+    // Function to check form validity
+    const checkFormValidity = () => {
+        const isFormValid = nameInput.value && emailInput.value && commitMessageInput.value && fileInput.files.length > 0;
+        submitButton.disabled = !isFormValid;
+    };
+
+    // Store data on input change and check form validity
+    nameInput.addEventListener('input', () => {
+        localStorage.setItem('name', nameInput.value);
+        checkFormValidity();
+    });
+
+    emailInput.addEventListener('input', () => {
+        localStorage.setItem('email', emailInput.value);
+        checkFormValidity();
+    });
+
+    commitMessageInput.addEventListener('input', () => {
+        checkFormValidity();
+    });
+
+    // Display chosen files and check form validity
+    fileInput.addEventListener('change', () => {
+        fileList.innerHTML = '';
+        const fileListContainer = document.createElement('div');
+        fileListContainer.classList.add('file-list-container');
+
+        const fileListElement = document.createElement('ul');
+        fileListContainer.appendChild(fileListElement);
+
+        for (let i = 0; i < fileInput.files.length; i++) {
+            const listItem = document.createElement('li');
+            listItem.textContent = fileInput.files[i].name;
+            fileListElement.appendChild(listItem);
+        }
+
+        fileInput.parentNode.insertBefore(fileListContainer, fileInput.nextSibling);
+
+        checkFormValidity();
+    });
+
+    document.getElementById('codeForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Disable submit button and show feedback
+        submitButton.disabled = true;
+        feedback.classList.remove('hidden');
+
+        const formData = new FormData(e.target);
+
+        try {
+            const response = await fetch('https://4qhii2jyp2.execute-api.us-east-1.amazonaws.com/prod/submit', {
+                method: 'POST',
+                body: formData
             });
 
-            emailInput.addEventListener('input', () => {
-                localStorage.setItem('email', emailInput.value);
-            });
+            if (response.ok) {
+                alert('Your submission has been submitted successfully!');
+            } else {
+                const errorText = await response.text();
+                console.error('Error response from server:', response.status, response.statusText, errorText);
+                alert('There was an error submitting your code.');
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert('There was an error submitting your code.');
+        }
 
-            // Display chosen files
-            fileInput.addEventListener('change', () => {
-                fileList.innerHTML = '';
-                const fileListContainer = document.createElement('div');
-                fileListContainer.classList.add('file-list-container');
+        // Enable submit button and hide feedback after the response
+        submitButton.disabled = false;
+        feedback.classList.add('hidden'); 
+    });
+});
 
-                const fileListElement = document.createElement('ul');
-                fileListContainer.appendChild(fileListElement);
-
-                for (let i = 0; i < fileInput.files.length; i++) {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = fileInput.files[i].name;
-                    fileListElement.appendChild(listItem);
-                }
-
-                fileInput.parentNode.insertBefore(fileListContainer, fileInput.nextSibling);
-            });
-
-            document.getElementById('codeForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                // Disable submit button and show feedback
-                submitButton.disabled = true;
-                feedback.style.display = 'block';
-
-                const formData = new FormData(e.target);
-
-                const response = await fetch('https://4qhii2jyp2.execute-api.us-east-1.amazonaws.com/prod/submit', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    alert('Your submission has been submitted successfully!');
-                } else {
-                    alert('There was an error submitting your code.');
-                }
-
-                // Enable submit button and hide feedback
-                submitButton.disabled = false;
-                feedback.style.display = 'none';
-            });
-        });
     </script>
 </body>
 
