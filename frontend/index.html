@@ -83,7 +83,7 @@
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required><br>
             <select id="repo" name="repo">
-                <option value="test">test</option>
+                <!-- REPONAME Option set from constant in SCRIPT below -->
             </select><br><br>
             <label for="commitMessage">Commit Message:</label>
             <input id="commitMessage" name="commitMessage" type="text" required><br><br>
@@ -98,96 +98,105 @@
     </div>
 
     <script>
+        // Name of repo where to push code
+        const REPONAME = "number-search";
+
         document.addEventListener('DOMContentLoaded', () => {
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const commitMessageInput = document.getElementById('commitMessage');
-    const submitButton = document.querySelector('button[type="submit"]');
-    const feedback = document.getElementById('feedback');
-    const fileInput = document.getElementById('file');
-    const fileList = document.getElementById('fileList');
+            const repoSelect = document.getElementById('repo');
+            const option = document.createElement('option');
+            option.value = REPONAME;
+            option.textContent = REPONAME;
+            repoSelect.appendChild(option);
 
-    // Disable submit button initially
-    submitButton.disabled = true;
 
-    // Load stored data
-    nameInput.value = localStorage.getItem('name') || '';
-    emailInput.value = localStorage.getItem('email') || '';
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const commitMessageInput = document.getElementById('commitMessage');
+            const submitButton = document.querySelector('button[type="submit"]');
+            const feedback = document.getElementById('feedback');
+            const fileInput = document.getElementById('file');
+            const fileList = document.getElementById('fileList');
 
-    // Function to check form validity
-    const checkFormValidity = () => {
-        const isFormValid = nameInput.value && emailInput.value && commitMessageInput.value && fileInput.files.length > 0;
-        submitButton.disabled = !isFormValid;
-    };
+            // Disable submit button initially
+            submitButton.disabled = true;
 
-    // Store data on input change and check form validity
-    nameInput.addEventListener('input', () => {
-        localStorage.setItem('name', nameInput.value);
-        checkFormValidity();
-    });
+            // Load stored data
+            nameInput.value = localStorage.getItem('name') || '';
+            emailInput.value = localStorage.getItem('email') || '';
 
-    emailInput.addEventListener('input', () => {
-        localStorage.setItem('email', emailInput.value);
-        checkFormValidity();
-    });
+            // Function to check form validity
+            const checkFormValidity = () => {
+                const isFormValid = nameInput.value && emailInput.value && commitMessageInput.value && fileInput.files.length > 0;
+                submitButton.disabled = !isFormValid;
+            };
 
-    commitMessageInput.addEventListener('input', () => {
-        checkFormValidity();
-    });
-
-    // Display chosen files and check form validity
-    fileInput.addEventListener('change', () => {
-        fileList.innerHTML = '';
-        const fileListContainer = document.createElement('div');
-        fileListContainer.classList.add('file-list-container');
-
-        const fileListElement = document.createElement('ul');
-        fileListContainer.appendChild(fileListElement);
-
-        for (let i = 0; i < fileInput.files.length; i++) {
-            const listItem = document.createElement('li');
-            listItem.textContent = fileInput.files[i].name;
-            fileListElement.appendChild(listItem);
-        }
-
-        fileInput.parentNode.insertBefore(fileListContainer, fileInput.nextSibling);
-
-        checkFormValidity();
-    });
-
-    document.getElementById('codeForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // Disable submit button and show feedback
-        submitButton.disabled = true;
-        feedback.classList.remove('hidden');
-
-        const formData = new FormData(e.target);
-
-        try {
-            const response = await fetch('https://4qhii2jyp2.execute-api.us-east-1.amazonaws.com/prod/submit', {
-                method: 'POST',
-                body: formData
+            // Store data on input change and check form validity
+            nameInput.addEventListener('input', () => {
+                localStorage.setItem('name', nameInput.value);
+                checkFormValidity();
             });
 
-            if (response.ok) {
-                alert('Your submission has been submitted successfully!');
-            } else {
-                const errorText = await response.text();
-                console.error('Error response from server:', response.status, response.statusText, errorText);
-                alert('There was an error submitting your code.');
-            }
-        } catch (error) {
-            console.error('Fetch error:', error);
-            alert('There was an error submitting your code.');
-        }
+            emailInput.addEventListener('input', () => {
+                localStorage.setItem('email', emailInput.value);
+                checkFormValidity();
+            });
 
-        // Enable submit button and hide feedback after the response
-        submitButton.disabled = false;
-        feedback.classList.add('hidden'); 
-    });
-});
+            commitMessageInput.addEventListener('input', () => {
+                checkFormValidity();
+            });
 
+            // Display chosen files and check form validity
+            fileInput.addEventListener('change', () => {
+                fileList.innerHTML = '';
+                const fileListContainer = document.createElement('div');
+                fileListContainer.classList.add('file-list-container');
+
+                const fileListElement = document.createElement('ul');
+                fileListContainer.appendChild(fileListElement);
+
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = fileInput.files[i].name;
+                    fileListElement.appendChild(listItem);
+                }
+
+                fileInput.parentNode.insertBefore(fileListContainer, fileInput.nextSibling);
+
+                checkFormValidity();
+            });
+
+            document.getElementById('codeForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Disable submit button and show feedback
+                submitButton.disabled = true;
+                feedback.classList.remove('hidden');
+
+                const formData = new FormData(e.target);
+
+                try {
+                    const response = await fetch('https://4qhii2jyp2.execute-api.us-east-1.amazonaws.com/prod/submit', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        alert('Your submission has been submitted successfully!');
+                    } else {
+                        const errorText = await response.text();
+                        console.error('Error response from server:', response.status, response.statusText, errorText);
+                        alert('There was an error submitting your code.');
+                    }
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    alert('There was an error submitting your code.');
+                }
+
+                // Enable submit button and hide feedback after the response
+                submitButton.disabled = false;
+                feedback.classList.add('hidden'); 
+            });
+        });
     </script>
 </body>
 
