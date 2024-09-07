@@ -192,9 +192,9 @@
                     const exampleDiv = document.createElement('div');
                     exampleDiv.classList.add('example');
                     exampleDiv.innerHTML = `
-                        <b>Input:</b> ${example.input}<br>
-                        <b>Output:</b> ${example.output}<br>
-                        <b>Explanation:</b> ${example.explanation}<br><br>
+                        <b>Input:</b><br> ${example.input.replace(/\n/g, '<br>')}<br><br>
+                        <b>Output:</b><br> ${example.output.replace(/\n/g, '<br>')}<br><br>
+                        <b>Explanation:</b><br> ${example.explanation.replace(/\n/g, '<br>')}<br>
                     `;
                     examplesBlock.appendChild(exampleDiv);
                 });
@@ -203,7 +203,7 @@
                 dueDateBlock.textContent = selectedProject.dueDate;
 
                 // Update repo dropdown
-                repoSelect.innerHTML = ''; // Clear the current repo options
+                repoSelect.innerHTML = ''; 
                 const repoOption = document.createElement('option');
                 repoOption.value = selectedProject.repo;
                 repoOption.textContent = selectedProject.repo;
