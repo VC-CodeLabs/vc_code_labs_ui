@@ -8,107 +8,87 @@
 
 <body>
     <div class="container">
-        <h1>Number Search</h1>
+        <h1>Code Labs Challenge</h1>
+
+        <!-- Dropdown for selecting projects -->
+        <label for="project">Select Project:</label>
+        <select id="project" name="project">
+            <!-- Options will be dynamically loaded here -->
+        </select>
+
+        <!-- Challenge Description -->
         <div class="challenge-block">
             <h2>Description</h2>
-        <p>Your program must take an input file, create an output file, and return the path to the newly created output file. Ensure the path to the input file is absolute and easily modifiable. <b>The input and output files must use Linux line endings (the line feed character: `\n`)</b>.
-        </br></br>
-            For each line of the input file:
-            </p>
-        <ul>
-            <li>Identify the first number in the line</li>
-            <li>Identify the last number in the line</li>
-            <li>Combine these two numbers to form a two-digit number (if there is only a single number in a given line - use that number twice)</li>
-            <li>Write this two-digit number to the new file</li>
-        </ul>
-
+            <p id="description"></p>
         </div>
 
+        <!-- Constraints -->
         <div class="challenge-block">
             <h2>Constraints</h2>
-            <p>
-                <li>There will be at least 1 line in each file</li>
-                <li>There is no set limit to the number of lines in a file _(hint: expect very large files)_</li>
-                <li>Each line will contain at least 1 number</li>
-                <li>The maximum line length is 100\</li>
-                <li>Alphanumeric only - no spaces or special characters</li>
-            </p>
+            <ul id="constraints">
+                <!-- Will be dynamically updated -->
+            </ul>
         </div>
 
+        <!-- Scoring Information -->
         <div class="challenge-block">
             <h2>Scoring</h2>
-            <p>
-                <li>Solutions must pass all test cases (tests used for scoring will not be the same as the provided example)</li>
-                <li>The program with the fastest execution time that passes all test cases is the winner</li>
-            </p>
+            <ul id="scoring">
+                <!-- Will be dynamically updated -->
+            </ul>
         </div>
 
+        <!-- Examples Section -->
         <div class="challenge-block">
-            <h2>Example</h2>
-            <pre>
-            <code>
-            <b>Input file:</b>
-            g5t86aah32
-            h7lmq9p
-            3xk
-            y1z4w8b
-            n8v2a  
-            
-            <b>Output file:</b>
-            52
-            79
-            33
-            18
-            82
-
-            <b>Program output:</b>
-            /home/user/output.txt
-
-        </code>
-        </pre>
+            <h2>Examples</h2>
+            <div id="examples">
+                <!-- Examples will be dynamically updated here -->
+            </div>
         </div>
 
+        <!-- Due Date Section -->
         <div class="challenge-block">
             <h2>Due Date</h2>
-            <p>
-                <li>All solutions must be submitted by September 1st at 23:59:59</li>
+            <p id="dueDate">
+                <!-- Due Date will be dynamically updated here -->
             </p>
         </div>
-        
-        <br><br>
 
+        <!-- Form for submission -->
         <form id="codeForm" enctype="multipart/form-data">
             <label for="name">Branch Name:</label>
             <input type="text" id="name" name="name" required><br><br>
+
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required><br>
+
             <select id="repo" name="repo">
-                <!-- REPONAME Option set from constant in SCRIPT below -->
+                <!-- Repository will be dynamically set here -->
             </select><br><br>
+
             <label for="commitMessage">Commit Message:</label>
             <input id="commitMessage" name="commitMessage" type="text" required><br><br>
+
             <label for="file">Upload File(s):</label>
             <input type="file" id="file" name="file" multiple required>
             <ul id="fileList"></ul>
-            <input type="text" id="honeypot" name="honeypot" autocomplete="off" >
+
+            <input type="text" id="honeypot" name="honeypot" autocomplete="off" style="display:none;">
             <button type="submit">Submit Solution</button>
         </form>
 
-        <div id="feedback"">Uploading your awesome solution... Please wait.</div>
+        <div id="feedback" class="hidden">Uploading your awesome solution... Please wait.</div>
     </div>
 
     <script>
-        // Name of repo where to push code
-        const REPONAME = "number-search";
-
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const repoSelect = document.getElementById('repo');
-            const option = document.createElement('option');
-            option.value = REPONAME;
-            option.textContent = REPONAME;
-            repoSelect.appendChild(option);
-
-
+            const projectSelect = document.getElementById('project');
+            const descriptionBlock = document.getElementById('description');
+            const constraintsBlock = document.getElementById('constraints');
+            const scoringBlock = document.getElementById('scoring');
+            const examplesBlock = document.getElementById('examples');
+            const dueDateBlock = document.getElementById('dueDate');
             const nameInput = document.getElementById('name');
             const emailInput = document.getElementById('email');
             const commitMessageInput = document.getElementById('commitMessage');
@@ -165,6 +145,82 @@
                 checkFormValidity();
             });
 
+            // Fetch project data from the JSON file
+            let projects = [];
+            try {
+                const response = await fetch('projects.json'); // Assumes the JSON file is in the same directory
+                projects = await response.json();
+            } catch (error) {
+                console.error('Error fetching project data:', error);
+                return;
+            }
+
+            // Populate project dropdown
+            projects.forEach((project, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = project.name;
+                projectSelect.appendChild(option);
+            });
+
+            // Function to update UI with project details
+            const updateProjectDetails = (projectIndex) => {
+                const selectedProject = projects[projectIndex];
+
+                // Update description
+                descriptionBlock.textContent = selectedProject.description;
+
+                // Clear and add constraints
+                constraintsBlock.innerHTML = '';
+                selectedProject.constraints.forEach(constraint => {
+                    const li = document.createElement('li');
+                    li.textContent = constraint;
+                    constraintsBlock.appendChild(li);
+                });
+
+                // Clear and add scoring details
+                scoringBlock.innerHTML = '';
+                selectedProject.scoring.forEach(score => {
+                    const li = document.createElement('li');
+                    li.textContent = score;
+                    scoringBlock.appendChild(li);
+                });
+
+                // Clear and add examples
+                examplesBlock.innerHTML = '';
+                selectedProject.examples.forEach(example => {
+                    const exampleDiv = document.createElement('div');
+                    exampleDiv.classList.add('example');
+                    exampleDiv.innerHTML = `
+                        <b>Input:</b> ${example.input}<br>
+                        <b>Output:</b> ${example.output}<br>
+                        <b>Explanation:</b> ${example.explanation}<br><br>
+                    `;
+                    examplesBlock.appendChild(exampleDiv);
+                });
+
+                // Update due date
+                dueDateBlock.textContent = selectedProject.dueDate;
+
+                // Update repo dropdown
+                repoSelect.innerHTML = ''; // Clear the current repo options
+                const repoOption = document.createElement('option');
+                repoOption.value = selectedProject.repo;
+                repoOption.textContent = selectedProject.repo;
+                repoSelect.appendChild(repoOption);
+            };
+
+
+            // Set initial project details
+            updateProjectDetails(0);
+
+            // Update project details on selection change
+            projectSelect.addEventListener('change', (event) => {
+                const selectedIndex = event.target.value;
+                updateProjectDetails(selectedIndex);
+            });
+
+            // Form submission logic
             document.getElementById('codeForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
 
@@ -173,6 +229,14 @@
                 feedback.classList.remove('hidden');
 
                 const formData = new FormData(e.target);
+
+                // Add selected repo to formData
+                const selectedRepo = repoSelect.value;
+                formData.append('repo', selectedRepo);
+
+                // Add selected project name to formData
+                const selectedProjectName = projects[projectSelect.value].name;
+                formData.append('projectName', selectedProjectName);
 
                 try {
                     const response = await fetch('https://4qhii2jyp2.execute-api.us-east-1.amazonaws.com/prod/submit', {
@@ -194,8 +258,11 @@
 
                 // Enable submit button and hide feedback after the response
                 submitButton.disabled = false;
-                feedback.classList.add('hidden'); 
+                feedback.classList.add('hidden');
             });
+
+            // Initial form validity check
+            checkFormValidity();
         });
     </script>
 </body>

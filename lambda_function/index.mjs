@@ -1,6 +1,6 @@
 import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 import { promises as fsPromises } from "fs";
-import { createWriteStream } from "fs"; // Importing createWriteStream from fs
+import { createWriteStream } from "fs";
 import path from "path";
 import https from "https";
 import Busboy from "busboy";
@@ -53,7 +53,6 @@ export const handler = async (event) => {
         };
     }
 
-    // Correct usage of Busboy
     const busboy = Busboy({ headers: { 'content-type': event.headers['content-type'] } });
 
     const fields = {};
@@ -65,16 +64,32 @@ export const handler = async (event) => {
         });
 
         busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-            const filepath = `/tmp/${filename}`;
-            const writeStream = createWriteStream(filepath); // Use createWriteStream
+            console.log('Received file:', { fieldname, filename, encoding, mimetype });
+
+            // Correctly handle the filename object case
+            let actualFilename = filename;
+            if (typeof filename !== 'string' && typeof filename === 'object' && filename.filename) {
+                actualFilename = filename.filename;
+                encoding = filename.encoding;
+                mimetype = filename.mimeType;
+            }
+
+            if (typeof actualFilename !== 'string' || !actualFilename.trim()) {
+                console.log('Filename is invalid, generating a unique name');
+                actualFilename = `upload-${Date.now()}`;
+            }
+
+            const filepath = `/tmp/${actualFilename}`;
+            const writeStream = createWriteStream(filepath);
 
             file.pipe(writeStream);
 
             file.on('end', () => {
                 files.push({
                     path: filepath,
-                    originalFilename: filename
+                    originalFilename: actualFilename
                 });
+                console.log('File saved to:', filepath);
             });
         });
 

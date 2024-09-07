@@ -1,0 +1,64 @@
+[
+    {
+      "name": "Course Schedule",
+      "repo": "course_schedule_repo",
+      "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.",
+      "constraints": [
+        "1 <= numCourses <= 2000",
+        "0 <= prerequisites.length <= 5000",
+        "prerequisites[i].length == 2",
+        "0 <= ai, bi < numCourses",
+        "All the pairs prerequisites[i] are unique."
+      ],
+      "scoring": [
+        "Solutions must pass all test cases (tests used for scoring will not be the same as the provided example)",
+        "The problem will be evaluated by speed, the fastest 3 solutions win (independent of language)."
+      ],
+      "examples": [
+        {
+          "input": "numCourses = 2, prerequisites = [[1,0]]",
+          "output": "true",
+          "explanation": "There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible."
+        },
+        {
+          "input": "numCourses = 2, prerequisites = [[1,0],[0,1]]",
+          "output": "false",
+          "explanation": "There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible."
+        }
+      ],
+      "dueDate": "September 15th at 23:59:59"
+    },
+    {
+      "name": "Another Project",
+      "repo": "test",
+      "description": "This is the description for another project. It outlines the project requirements and the objective.",
+      "constraints": [
+        "Some constraint 1",
+        "Some constraint 2",
+        "Some constraint 3"
+      ],
+      "scoring": [
+        "Pass all test cases.",
+        "Speed matters."
+      ],
+      "examples": [
+        {
+          "input": "input example 1",
+          "output": "output example 1",
+          "explanation": "This is an explanation for example 1."
+        },
+        {
+          "input": "input example 2",
+          "output": "output example 2",
+          "explanation": "This is an explanation for example 2."
+        },
+        {
+          "input": "input example 3",
+          "output": "output example 3",
+          "explanation": "This is an explanation for example 3."
+        }
+      ],
+      "dueDate": "October 1st at 23:59:59"
+    }
+  ]
+  

@@ -89,6 +89,20 @@ button:disabled {
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.example {
+    background-color: #f0f4f8;
+    padding: 10px;
+    border-left: 4px solid #007bff;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.example b {
+    color: #333;
 }
 
 pre {
@@ -146,5 +160,9 @@ select#repo, label#repo {
 }
 
 #feedback {
+    display: none;
+}
+
+#repo {
     display: none;
 }
