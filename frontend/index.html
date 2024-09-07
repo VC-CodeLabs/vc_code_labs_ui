@@ -8,7 +8,7 @@
 
 <body>
     <div class="container">
-        <h1>Code Labs Challenge</h1>
+        <h1 id="pageTitle">Code Labs Challenge</h1>
 
         <!-- Dropdown for selecting projects -->
         <label for="project">Select Project:</label>
@@ -166,6 +166,10 @@
             // Function to update UI with project details
             const updateProjectDetails = (projectIndex) => {
                 const selectedProject = projects[projectIndex];
+
+                // Update page title with Project Name + Code Labs Challenge
+                const pageTitle = document.getElementById('pageTitle');
+                pageTitle.textContent = `${selectedProject.name} Code Labs Challenge`;
 
                 // Update description
                 descriptionBlock.textContent = selectedProject.description;
