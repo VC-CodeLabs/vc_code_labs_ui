@@ -1,7 +1,7 @@
 [
     {
       "name": "Course Schedule",
-      "repo": "course_schedule_repo",
+      "repo": "course_schedule",
       "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.",
       "constraints": [
         "1 <= numCourses <= 2000",

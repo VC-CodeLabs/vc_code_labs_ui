@@ -105,6 +105,16 @@ button:disabled {
     color: #333;
 }
 
+label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+#project {
+    width: 300px;
+}
+
 pre {
     background-color: #f8f8f8;
     padding: 10px;
