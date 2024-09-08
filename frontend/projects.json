@@ -52,7 +52,7 @@
         }
       ],
       "dueDate": "All solutions must be submitted by September 1st at 23:59:59"
-    }    ,
+    },
     {
       "name": "Maximum Number of Operations",
       "repo": "max_ops_score",
@@ -80,6 +80,36 @@
       ],
       "reference": "https://leetcode.com/problems/maximum-number-of-operations-with-the-same-score-ii/description/",
       "dueDate": "All solutions must be submitted either via an MR into this GitHub repo or through email by August 18th at 23:59:59"
+    },
+    {
+      "name": "Merge Intervals",
+      "repo": "merge_intervals",
+      "description": "Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals and return an array of the non-overlapping intervals that cover all the intervals in the input.",
+      "constraints": [
+        "1 <= intervals.length <= 10^4",
+        "intervals[i].length == 2",
+        "0 <= starti <= endi <= 10^4",
+        "The input array is not guaranteed to be sorted"
+      ],
+      "scoring": [
+        "Solutions must pass all test cases, including edge cases; tests used for grading/scoring may not be the same tests provided as examples.",
+        "Fast execution times will be rewarded, but solutions must, first and foremost, be correct and complete.",
+        "If more than three languages are submitted, the fastest solution from each of the top three will be considered."
+      ],
+      "examples": [
+        {
+          "input": "intervals = [[1,3],[2,6],[8,10],[15,18]]",
+          "output": "[[1,6],[8,10],[15,18]]",
+          "explanation": "Since intervals [1,3] and [2,6] overlap, merge them into [1,6]"
+        },
+        {
+          "input": "intervals = [[1,4],[4,5]]",
+          "output": "[[1,5]]",
+          "explanation": "Intervals [1,4] and [4,5] are considered overlapping"
+        }
+      ],
+      "reference": "https://leetcode.com/problems/merge-intervals/description/",
+      "dueDate": "All solutions must be submitted either via an MR into this GitHub repo or through email by Aug 3rd at 23:59:59"
     }
   ]
   
