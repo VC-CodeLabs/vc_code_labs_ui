@@ -46,6 +46,13 @@
             </div>
         </div>
 
+        <div class="challenge-block" id="reference-block">
+            <h2>Reference</h2>
+            <p id="reference">
+                <!-- Reference URL will be dynamically updated here -->
+            </p>
+        </div>
+
         <!-- Due Date Section -->
         <div class="challenge-block">
             <h2>Due Date</h2>
@@ -64,7 +71,7 @@
 
             <select id="repo" name="repo">
                 <!-- Repository will be dynamically set here -->
-            </select><br><br>
+            </select><br>
 
             <label for="commitMessage">Commit Message</label>
             <input id="commitMessage" name="commitMessage" type="text" required><br><br>
@@ -205,6 +212,16 @@
 
                 // Update due date
                 dueDateBlock.textContent = selectedProject.dueDate;
+
+                // Handle optional reference
+                const referenceBlock = document.getElementById('reference-block');
+                const referenceElement = document.getElementById('reference');
+                if (selectedProject.reference) {
+                    referenceBlock.style.display = 'block';
+                    referenceElement.innerHTML = `<a href="${selectedProject.reference}" target="_blank">${selectedProject.reference}</a>`;
+                } else {
+                    referenceBlock.style.display = 'none';
+        }
 
                 // Update repo dropdown
                 repoSelect.innerHTML = ''; 
