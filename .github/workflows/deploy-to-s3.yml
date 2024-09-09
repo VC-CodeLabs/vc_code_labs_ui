@@ -21,5 +21,8 @@ jobs:
         aws-region: us-east-1
 
     - name: Sync files to S3
-      run: aws s3 sync . s3://vccodelabs --delete 
-      
+      run: |
+        aws s3 cp lambda/index.mjs s3://vccodelabs/index.mjs --only-show-errors
+        aws s3 cp css/styles.css s3://vccodelabs/styles.css --only-show-errors
+        aws s3 cp index.html s3://vccodelabs/index.html --only-show-errors
+        
