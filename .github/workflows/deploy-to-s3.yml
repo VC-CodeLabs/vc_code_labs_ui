@@ -18,20 +18,20 @@ jobs:
 
     - name: Check and Create Repositories
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
       run: |
         # Parse projects.json to get repo names
         for repo in $(jq -r '.[].repo' frontend/projects.json); do
           # Check if the repository exists in your VC-CodeLabs GitHub account
           REPO_EXISTS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Authorization: token $REPO_TOKEN" \
             https://api.github.com/repos/VC-CodeLabs/$repo)
 
           # If the repository does not exist (404), create it
           if [ "$REPO_EXISTS" -eq "404" ]; then
             echo "Repository $repo does not exist. Creating it..."
             curl -X POST \
-              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Authorization: token $REPO_TOKEN" \
               -H "Content-Type: application/json" \
               -d '{"name":"'"$repo"'"}' \
               https://api.github.com/orgs/VC-CodeLabs/repos
