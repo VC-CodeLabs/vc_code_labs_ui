@@ -13,6 +13,33 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Install jq for JSON parsing
+      run: sudo apt-get install jq
+
+    - name: Check and Create Repositories
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Parse projects.json to get repo names
+        for repo in $(jq -r '.[].repo' frontend/projects.json); do
+          # Check if the repository exists in your VC-CodeLabs GitHub account
+          REPO_EXISTS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/VC-CodeLabs/$repo)
+
+          # If the repository does not exist (404), create it
+          if [ "$REPO_EXISTS" -eq "404" ]; then
+            echo "Repository $repo does not exist. Creating it..."
+            curl -X POST \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{"name":"'"$repo"'"}' \
+              https://api.github.com/orgs/VC-CodeLabs/repos
+          else
+            echo "Repository $repo already exists."
+          fi
+        done
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -25,4 +52,3 @@ jobs:
         aws s3 cp frontend/projects.json s3://vccodelabs/projects.json --only-show-errors
         aws s3 cp frontend/styles.css s3://vccodelabs/styles.css --only-show-errors
         aws s3 cp frontend/index.html s3://vccodelabs/index.html --only-show-errors
-        
