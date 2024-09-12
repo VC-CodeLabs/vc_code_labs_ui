@@ -155,7 +155,7 @@
             // Fetch project data from the JSON file
             let projects = [];
             try {
-                const response = await fetch('projects.json'); // Assumes the JSON file is in the same directory
+                const response = await fetch('projects.json?t=' + new Date().getTime());
                 projects = await response.json();
             } catch (error) {
                 console.error('Error fetching project data:', error);
