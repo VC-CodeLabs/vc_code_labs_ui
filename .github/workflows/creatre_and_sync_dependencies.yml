@@ -1,4 +1,4 @@
-name: Deploy to S3
+name: Upload to S3 and Create Repo
 
 on:
   push:
@@ -15,6 +15,15 @@ jobs:
 
     - name: Install jq for JSON parsing
       run: sudo apt-get install jq
+
+    - name: Lint JSON file
+      run: |
+        if ! jq empty frontend/projects.json; then
+          echo "Invalid JSON in projects.json"
+          exit 1
+        else
+          echo "projects.json is valid"
+        fi
 
     - name: Check and Create Repositories
       env:
