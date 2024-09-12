@@ -30,17 +30,18 @@ jobs:
           # If the repository does not exist (404), create it
           if [ "$REPO_EXISTS" -eq "404" ]; then
             echo "Repository $repo does not exist. Creating it..."
-            curl -X POST \
+            RESPONSE=$(curl -X POST \
               -H "Authorization: token $REPO_TOKEN" \
               -H "Content-Type: application/json" \
               -d '{"name":"'"$repo"'", "auto_init": true}' \
-              https://api.github.com/orgs/VC-CodeLabs/repos
+              https://api.github.com/user/repos)
 
-            # Check if the repository creation was successful
-            if [ $? -eq 0 ]; then
+            echo "API response: $RESPONSE"
+
+            if [[ $RESPONSE == *"created_at"* ]]; then
               echo "Repository $repo created successfully."
             else
-              echo "Failed to create repository $repo."
+              echo "Failed to create repository $repo. Response: $RESPONSE"
             fi
           else
             echo "Repository $repo already exists."
