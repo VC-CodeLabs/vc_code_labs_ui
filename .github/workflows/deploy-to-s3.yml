@@ -33,8 +33,15 @@ jobs:
             curl -X POST \
               -H "Authorization: token $REPO_TOKEN" \
               -H "Content-Type: application/json" \
-              -d '{"name":"'"$repo"'"}' \
+              -d '{"name":"'"$repo"'", "auto_init": true}' \
               https://api.github.com/orgs/VC-CodeLabs/repos
+
+            # Check if the repository creation was successful
+            if [ $? -eq 0 ]; then
+              echo "Repository $repo created successfully."
+            else
+              echo "Failed to create repository $repo."
+            fi
           else
             echo "Repository $repo already exists."
           fi
